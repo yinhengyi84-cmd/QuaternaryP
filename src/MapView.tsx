@@ -40,7 +40,7 @@ export default function MapView({ geometry, water, cities, territories, selected
   useEffect(()=>{
     const svg=svgRef.current;
     if(!svg)return;
-    const update=()=>{const box=svg.getBoundingClientRect();setDisplayScale(Math.max(.2,Math.min(box.width/1000,box.height/900)));setCompact(box.width<500);};
+    const update=()=>{const box=svg.getBoundingClientRect();setDisplayScale(Math.max(.01,Math.min(box.width/1000,box.height/900)));setCompact(box.width<500);};
     update();const observer=new ResizeObserver(update);observer.observe(svg);return()=>observer.disconnect();
   },[]);
 
@@ -89,15 +89,33 @@ export default function MapView({ geometry, water, cities, territories, selected
       return {city,x,y,label:compact&&transform.k<2&&city.role==='major'?undefined:position,labelWidth,labelHeight,visible:x>=-20&&x<=1020&&y>=-20&&y<=920};
     });
   },[projectedCities,transform,displayScale,compact]);
+  // 按屏幕像素设定字号，随地图放大缓慢增长，避免手机上被 viewBox 缩成几像素。
+  const labelPixels=Math.min(18,(compact?12:11)+2*Math.log2(Math.max(1,transform.k/(compact?2:1))));
+  const labelFontSize=labelPixels/displayScale;
+  const labelSpacing=.8/displayScale;
   const visibleLabels=useMemo(() => {
-    const occupied: [number,number][]=[];
-    return projected.filter(p => {
-      if (!Number.isFinite(p.center[0]) || (compact&&transform.k<2) || p.area*transform.k*transform.k<2300 || (faction && dictionary.get(p.id)?.faction!==faction)) return false;
-      const x=p.center[0]*transform.k+transform.x;const y=p.center[1]*transform.k+transform.y;
-      if(x<35||x>965||y<30||y>870||occupied.some(([a,b])=>Math.abs(a-x)<90&&Math.abs(b-y)<25)||cityLayout.some(c=>c.visible&&Math.abs(c.x-x)<75/displayScale&&Math.abs(c.y-y)<28/displayScale))return false;
-      occupied.push([x,y]);return true;
+    const gap=4/displayScale;
+    const occupied: [number,number,number,number][]=[];
+    const overlaps=(box:[number,number,number,number],other:[number,number,number,number])=>box[0]<other[2]+gap&&box[2]>other[0]-gap&&box[1]<other[3]+gap&&box[3]>other[1]-gap;
+    // 同时避让城市图标和标牌，长地区名称使用完整文字宽度参与布局。
+    const cityBoxes=cityLayout.filter(c=>c.visible).flatMap(c=>{
+      const radius=14/displayScale;
+      const boxes:[number,number,number,number][]=[[c.x-radius,c.y-radius,c.x+radius,c.y+radius]];
+      if(c.label)boxes.push([c.label[0],c.label[1],c.label[0]+c.labelWidth/displayScale,c.label[1]+c.labelHeight/displayScale]);
+      return boxes;
     });
-  },[projected,transform,faction,dictionary,cityLayout,displayScale,compact]);
+    return projected.flatMap(p => {
+      if (!Number.isFinite(p.center[0]) || !Number.isFinite(p.center[1]) || (compact&&transform.k<2) || p.area*transform.k*transform.k<2300 || (faction && dictionary.get(p.id)?.faction!==faction)) return [];
+      const x=p.center[0]*transform.k+transform.x,y=p.center[1]*transform.k+transform.y;
+      const name=dictionary.get(p.id)!.chineseName.split('／')[0].split('·')[0];
+      const chars=Array.from(name);
+      const width=chars.reduce((sum,char)=>sum+labelFontSize*(/[\x00-\x7f]/.test(char)?.65:1),0)+chars.length*labelSpacing;
+      const height=labelFontSize*1.3;
+      const box:[number,number,number,number]=[x-width/2,y-height/2,x+width/2,y+height/2];
+      if(box[0]<gap||box[2]>1000-gap||box[1]<gap||box[3]>900-gap||occupied.some(other=>overlaps(box,other))||cityBoxes.some(other=>overlaps(box,other)))return [];
+      occupied.push(box);return [{id:p.id,x,y,name}];
+    });
+  },[projected,transform,faction,dictionary,cityLayout,displayScale,compact,labelFontSize,labelSpacing]);
   function reset() { stopAnimation();if(behavior.current&&svgRef.current)select(svgRef.current).call(behavior.current.transform,zoomIdentity); }
   function scale(factor:number) { stopAnimation();if(behavior.current&&svgRef.current)select(svgRef.current).call(behavior.current.scaleBy,factor,[500,450]); }
   return <div className="map-stage" data-testid="map-stage">
@@ -116,7 +134,9 @@ export default function MapView({ geometry, water, cities, territories, selected
           onMouseMove={e=>{if(!origin.current)setHover({territory:t,x:e.clientX,y:e.clientY});}}
           onMouseLeave={()=>setHover(null)}><title>{t.chineseName} · {t.name}</title></path>})}
         {projectionResult.waters.map(p=><path key={p.id} d={p.d} aria-hidden="true" className="inland-water" fill="#17282e" fillRule="evenodd" stroke="#17282e" strokeWidth=".4" vectorEffect="non-scaling-stroke" onClick={e=>e.stopPropagation()} onMouseMove={()=>setHover(null)}/>)}
-        {visibleLabels.map(p=><text key={p.id} x={p.center[0]} y={p.center[1]} className="province-label" fontSize={11/transform.k} strokeWidth={2.5/transform.k}>{dictionary.get(p.id)!.chineseName.split('／')[0].split('·')[0]}</text>)}
+      </g>
+      <g className="province-label-layer" aria-hidden="true">
+        {visibleLabels.map(p=><text key={p.id} x={p.x} y={p.y} className="province-label" dominantBaseline="middle" fontSize={labelFontSize} strokeWidth={2/displayScale} style={{letterSpacing:labelSpacing}}>{p.name}</text>)}
       </g>
       <g className="city-layer">
         {cityLayout.filter(item=>item.visible).map(({city,x,y,label,labelWidth,labelHeight})=>{
