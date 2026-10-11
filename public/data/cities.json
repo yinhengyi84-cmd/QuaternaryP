@@ -12,6 +12,8 @@
     {"id":"s-shanghai","territoryId":"LVA-71098776B41268812817743","recordCode":"S019","name":"上海","europe":"里加","coordinates":[24.1052,56.9496],"role":"major"},
     {"id":"p-yunmeng","territoryId":"POL-17162690B84565288021286","recordCode":"P006","name":"云梦","europe":"华沙","coordinates":[21.0122,52.2297],"role":"capital"},
     {"id":"d-yiling","territoryId":"DEU-10402087B20892132820961","recordCode":"D010","name":"夷陵","europe":"柏林","coordinates":[13.4050,52.5200],"role":"capital"},
+    {"id":"d-yibin","territoryId":"DEU-10402087B45896528657515","recordCode":"D006","name":"宜宾","europe":"汉堡","coordinates":[9.9937,53.5511],"role":"major"},
+    {"id":"d-echeng","territoryId":"DEU-10402087B86022102756745","recordCode":"D012","name":"鹅城","europe":"科隆","coordinates":[6.9603,50.9375],"role":"major"},
     {"id":"d-changsha","territoryId":"CZE-73172107B16313596965023","recordCode":"D024","name":"长沙","europe":"布拉格","coordinates":[14.4208,50.0880],"role":"major"}
   ]
 }

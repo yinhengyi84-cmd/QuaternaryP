@@ -22,7 +22,7 @@ test('加载失败能重试',async({page})=>{
   await page.route('**/data/atlas.json',route=>route.abort());await page.reload();await expect(page.getByRole('heading',{name:'地图加载失败'})).toBeVisible();await page.unroute('**/data/atlas.json');await page.getByRole('button',{name:'重新加载'}).click();await expect(page.locator('.province')).toHaveCount(190);
 });
 test('六方首都与战略城市可选中，明斯克州使用新别名',async({page})=>{
-  await expect(page.locator('.city-marker')).toHaveCount(12);
+  await expect(page.locator('.city-marker')).toHaveCount(14);
   await expect(page.locator('.city-marker.capital')).toHaveCount(6);
   await page.getByRole('button',{name:'兰陵，圣彼得堡，首都，拜占庭'}).click();
   await expect(page.getByTestId('region-title')).toHaveText('兰陵');
@@ -30,6 +30,20 @@ test('六方首都与战略城市可选中，明斯克州使用新别名',async(
   await page.getByRole('combobox',{name:'搜索地区'}).press('Enter');
   await expect(page.getByTestId('region-title')).toHaveText('合肥·明斯克州');
   await expect(page.locator('.region-facts')).toContainText('合肥');
+});
+test('姑苏全图标牌稳定显示，汉堡和科隆要地可点击',async({page})=>{
+  for(const width of [390,760,1024,1280,1600]){
+    await page.setViewportSize({width,height:844});
+    await expect(page.locator('[data-city-id="s-gusu"] .city-label')).toBeVisible();
+    await expect(page.locator('[data-city-id="s-gusu"] .city-label')).toHaveText('姑苏');
+  }
+  await page.setViewportSize({width:1280,height:720});
+  await page.getByRole('button',{name:'宜宾，汉堡，战略城市，德意志'}).click();
+  await expect(page.getByTestId('region-title')).toHaveText('宜宾／叙州');
+  await page.getByRole('button',{name:'鹅城，科隆，战略城市，德意志'}).click();
+  await expect(page.getByTestId('region-title')).toContainText('重庆双工业区');
+  await page.getByRole('combobox',{name:'搜索地区'}).fill('鹅城');
+  await expect(page.getByRole('option',{name:/鹅城/})).toBeVisible();
 });
 test.describe('真实触摸事件',()=>{
   test.use({isMobile:true,hasTouch:true,viewport:{width:390,height:844}});

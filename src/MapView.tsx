@@ -72,11 +72,12 @@ export default function MapView({ geometry, water, cities, territories, selected
   const cityLayout=useMemo(()=>{
     const occupied:[number,number,number,number][]=[];
     const scale=1/displayScale;
-    const sorted=[...projectedCities].sort((a,b)=>Number(b.city.role==='capital')-Number(a.city.role==='capital'));
+    // 姑苏是苏俄首都，先为它保留全图标牌位置，再安排其他城市。
+    const sorted=[...projectedCities].sort((a,b)=>Number(b.city.id==='s-gusu')-Number(a.city.id==='s-gusu')||Number(b.city.role==='capital')-Number(a.city.role==='capital'));
     return sorted.map(({city,point})=>{
       const x=point[0]*transform.k+transform.x,y=point[1]*transform.k+transform.y;
       const labelWidth=compact?(city.role==='capital'?63:43):(city.role==='capital'?74:48);
-      const labelHeight=compact?(city.role==='capital'?27:23):(city.role==='capital'?30:25);
+      const labelHeight=compact?23:25;
       const width=labelWidth*scale,height=labelHeight*scale,gap=13*scale;
       const options:[number,number][]=[[x+gap,y-height/2],[x-gap-width,y-height/2],[x-width/2,y-gap-height],[x-width/2,y+gap]];
       // 北欧湾口的首都较密集，标签可沿周围空白海面阶梯排布。
@@ -84,7 +85,8 @@ export default function MapView({ geometry, water, cities, territories, selected
         const offset=distance*scale;
         options.push([x+gap,y-height/2-offset],[x-gap-width,y-height/2-offset],[x+gap,y-height/2+offset],[x-gap-width,y-height/2+offset]);
       }
-      const position=options.find(([left,top])=>left>=7&&top>=7&&left+width<=993&&top+height<=893&&!occupied.some(([a,b,c,d])=>left<c+4*scale&&left+width>a-4*scale&&top<d+4*scale&&top+height>b-4*scale));
+      const position=options.find(([left,top])=>left>=7&&top>=7&&left+width<=993&&top+height<=893&&!occupied.some(([a,b,c,d])=>left<c+4*scale&&left+width>a-4*scale&&top<d+4*scale&&top+height>b-4*scale))
+        ?? (city.id==='s-gusu'&&transform.k<=1.3?[Math.max(7,Math.min(993-width,x-gap-width)),Math.max(7,Math.min(893-height,y-height/2))] as [number,number]:undefined);
       if(position)occupied.push([position[0],position[1],position[0]+width,position[1]+height]);
       return {city,x,y,label:compact&&transform.k<2&&city.role==='major'?undefined:position,labelWidth,labelHeight,visible:x>=-20&&x<=1020&&y>=-20&&y<=920};
     });
@@ -157,8 +159,7 @@ export default function MapView({ geometry, water, cities, territories, selected
             {label&&Math.hypot(label[0]-x,label[1]-y)>40*scale&&<line className="city-leader" x1={x} y1={y} x2={Math.max(label[0],Math.min(x,label[0]+labelWidth*scale))} y2={Math.max(label[1],Math.min(y,label[1]+labelHeight*scale))}/>}
             {label&&<g transform={`translate(${label[0]} ${label[1]}) scale(${scale})`} className="city-label">
               <rect width={labelWidth} height={labelHeight} rx="3"/>
-              <text x="9" y={city.role==='capital'?14:17}>{city.name}</text>
-              {city.role==='capital'&&<text className="capital-caption" x="9" y={compact?23:25}>★ 首都</text>}
+              <text x="9" y={compact?16:17}>{city.name}</text>
             </g>}
           </g>;
         })}

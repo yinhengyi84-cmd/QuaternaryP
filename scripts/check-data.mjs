@@ -16,7 +16,7 @@ for(const feature of geometry.features){
 }
 for(const t of atlas.territories){assert(t.name&&t.chineseName&&t.faction&&t.recordIds.length);assert(t.recordIds.every(c=>codes.has(c)));}
 for(const r of atlas.records){assert(atlas.reconciliation.some(m=>m.code===r.code));assert(atlas.territories.some(t=>t.recordIds.includes(r.code)),`资料未对应：${r.code}`);}
-assert.equal(cities.length,12);
+assert.equal(cities.length,14);
 assert.equal(new Set(cities.map(c=>c.id)).size,cities.length);
 assert.equal(cities.filter(c=>c.role==='capital').length,6);
 for(const city of cities){
