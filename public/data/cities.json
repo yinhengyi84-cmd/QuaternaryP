@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "cities": [
+    {"id":"j-kishan","territoryId":"SWE-68755315B30510620730039","recordCode":"J035","name":"岐山","europe":"斯德哥尔摩","coordinates":[18.0632,59.3293],"role":"capital"},
+    {"id":"j-jingzhao","territoryId":"NOR-71437522B68338217323905","recordCode":"J031","name":"京兆","europe":"奥斯陆","coordinates":[10.7522,59.9139],"role":"major"},
+    {"id":"j-luoyang","territoryId":"DNK-84455774B68755790009873","recordCode":"J053","name":"洛阳","europe":"欧登塞","coordinates":[10.3883,55.4038],"role":"major"},
+    {"id":"q-qinghe","territoryId":"FIN-49019192B30960840619879","recordCode":"Q017","name":"清河","europe":"赫尔辛基","coordinates":[24.9384,60.1699],"role":"capital"},
+    {"id":"b-lanling","territoryId":"RUS-28173009B8796515134902","recordCode":"B001","name":"兰陵","europe":"圣彼得堡","coordinates":[30.3158,59.9343],"role":"capital"},
+    {"id":"b-qingdao","territoryId":"EST-21999144B19319879871883","recordCode":"B007","name":"青岛","europe":"塔林","coordinates":[24.7536,59.4370],"role":"major"},
+    {"id":"s-gusu","territoryId":"RUS-28173009B19676032168465","recordCode":"S040","name":"姑苏","europe":"莫斯科","coordinates":[37.6173,55.7558],"role":"capital"},
+    {"id":"s-zhongli","territoryId":"BLR-45462678B57724394311820","recordCode":"S044","name":"钟离","europe":"明斯克","coordinates":[27.5615,53.9045],"role":"major"},
+    {"id":"s-shanghai","territoryId":"LVA-71098776B41268812817743","recordCode":"S019","name":"上海","europe":"里加","coordinates":[24.1052,56.9496],"role":"major"},
+    {"id":"p-yunmeng","territoryId":"POL-17162690B84565288021286","recordCode":"P006","name":"云梦","europe":"华沙","coordinates":[21.0122,52.2297],"role":"capital"},
+    {"id":"d-yiling","territoryId":"DEU-10402087B20892132820961","recordCode":"D010","name":"夷陵","europe":"柏林","coordinates":[13.4050,52.5200],"role":"capital"},
+    {"id":"d-changsha","territoryId":"CZE-73172107B16313596965023","recordCode":"D024","name":"长沙","europe":"布拉格","coordinates":[14.4208,50.0880],"role":"major"}
+  ]
+}

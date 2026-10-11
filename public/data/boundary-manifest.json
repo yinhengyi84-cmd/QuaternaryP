@@ -1,0 +1,159 @@
+{
+  "sources": [
+    {
+      "iso": "DEU",
+      "country": "德国",
+      "year": "2021",
+      "boundaryId": "DEU-ADM1-10402087",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DEU/ADM1/geoBoundaries-DEU-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DEU/ADM1/geoBoundaries-DEU-ADM1_simplified.geojson",
+      "license": "Data license Germany - Attribution - Version 2.0",
+      "source": "Federal Agency for Cartography and Geodesy",
+      "fileSha256": "92c59d5e7d9683cd7be0a8aa42f1de69030cbc72125fa8a5042edeaee1fd881e"
+    },
+    {
+      "iso": "CZE",
+      "country": "捷克",
+      "year": "2021",
+      "boundaryId": "CZE-ADM1-73172107",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/CZE/ADM1/geoBoundaries-CZE-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/CZE/ADM1/geoBoundaries-CZE-ADM1_simplified.geojson",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "source": "Czech Office for Surveying",
+      "fileSha256": "4864c301d8ad4baa1f8c276a2b28d6d16fc770a4dc871006915a674fc5677ba4"
+    },
+    {
+      "iso": "POL",
+      "country": "波兰",
+      "year": "2017",
+      "boundaryId": "POL-ADM1-17162690",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/POL/ADM1/geoBoundaries-POL-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/POL/ADM1/geoBoundaries-POL-ADM1_simplified.geojson",
+      "license": "Open Data Commons Open Database License 1.0",
+      "source": "OpenStreetMap, Wambacher",
+      "fileSha256": "fb66da27b6b84b6c305ea5805dccfc3e153f46462ba96ccd629d8565d94478f6"
+    },
+    {
+      "iso": "NOR",
+      "country": "挪威",
+      "year": "2022",
+      "boundaryId": "NOR-ADM1-71437522",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/NOR/ADM1/geoBoundaries-NOR-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/NOR/ADM1/geoBoundaries-NOR-ADM1_simplified.geojson",
+      "license": "Creative Commons Attribution 4.0 (CC BY 4.0)",
+      "source": "Kartverket",
+      "fileSha256": "057fe2df38bdbbbf0c2dcafe5ee5ae90baa540bfdbb4a3a668d3c5dae0ebfdf1"
+    },
+    {
+      "iso": "SWE",
+      "country": "瑞典",
+      "year": "2009",
+      "boundaryId": "SWE-ADM1-68755315",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/SWE/ADM1/geoBoundaries-SWE-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/SWE/ADM1/geoBoundaries-SWE-ADM1_simplified.geojson",
+      "license": "Creative Commons Attribution 3.0 License",
+      "source": "geoBoundaries, Erik Frohne",
+      "fileSha256": "7b01b0b7dbb14708205ea3f148714a17a62955c0fe18af69b5f27725378f1106"
+    },
+    {
+      "iso": "FIN",
+      "country": "芬兰",
+      "year": "2017",
+      "boundaryId": "FIN-ADM1-49019192",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/FIN/ADM1/geoBoundaries-FIN-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/FIN/ADM1/geoBoundaries-FIN-ADM1_simplified.geojson",
+      "license": "Open Data Commons Open Database License 1.0",
+      "source": "OpenStreetMap, Wambacher",
+      "fileSha256": "ca89488caa6e60fd5b0cd8672718dcb4f9a2326dfc59929dc4ab6caf2c77227a"
+    },
+    {
+      "iso": "DNK",
+      "country": "丹麦",
+      "year": "2021",
+      "boundaryId": "DNK-ADM1-84455774",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DNK/ADM1/geoBoundaries-DNK-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DNK/ADM1/geoBoundaries-DNK-ADM1_simplified.geojson",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "source": "geoBoundaries, Web Vectors Map",
+      "fileSha256": "62dc1ed4bc969caccc1ac0b191ef196b8b2eb6e048bea7810bb6bb1ad27a0e67"
+    },
+    {
+      "iso": "EST",
+      "country": "爱沙尼亚",
+      "year": "2016",
+      "boundaryId": "EST-ADM1-21999144",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/EST/ADM1/geoBoundaries-EST-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/EST/ADM1/geoBoundaries-EST-ADM1_simplified.geojson",
+      "license": "Open Data Commons Open Database License 1.0",
+      "source": "OpenStreetMap, Wambacher",
+      "fileSha256": "ce66fa15d1af5858e872cfe2fca83adb67d20aa96bcc8e2619a68e0bd3e87f32"
+    },
+    {
+      "iso": "LTU",
+      "country": "立陶宛",
+      "year": "2017",
+      "boundaryId": "LTU-ADM1-39236102",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/LTU/ADM1/geoBoundaries-LTU-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/LTU/ADM1/geoBoundaries-LTU-ADM1_simplified.geojson",
+      "license": "Open Data Commons Open Database License 1.0",
+      "source": "OpenStreetMap, Wambacher",
+      "fileSha256": "3a4fd1038f65bd3d59d35eb4f53bc76cb534d24bb46d820799f39e4f5b0e5511"
+    },
+    {
+      "iso": "BLR",
+      "country": "白俄罗斯",
+      "year": "2005",
+      "boundaryId": "BLR-ADM1-45462678",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/BLR/ADM1/geoBoundaries-BLR-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/BLR/ADM1/geoBoundaries-BLR-ADM1_simplified.geojson",
+      "license": "Creative Commons Attribution 3.0 License",
+      "source": "geoBoundaries, CIESIN",
+      "fileSha256": "2b1289db3ce40b1596ace243c3665b9052335abbf1d3232bff54931af73a53fb"
+    },
+    {
+      "iso": "RUS",
+      "country": "俄罗斯（局部）",
+      "year": "2017",
+      "boundaryId": "RUS-ADM1-28173009",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/RUS/ADM1/geoBoundaries-RUS-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/RUS/ADM1/geoBoundaries-RUS-ADM1_simplified.geojson",
+      "license": "Open Data Commons Open Database License 1.0",
+      "source": "OpenStreetMap, Wambacher",
+      "fileSha256": "7b9da1e2bdd3ed1fd7219ab1b018d5df0e873845bb6117b90bb61f0c9a858db3"
+    },
+    {
+      "iso": "UKR",
+      "country": "乌克兰（局部）",
+      "year": "2017",
+      "boundaryId": "UKR-ADM1-14850775",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/UKR/ADM1/geoBoundaries-UKR-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/UKR/ADM1/geoBoundaries-UKR-ADM1_simplified.geojson",
+      "license": "Open Data Commons Open Database License 1.0",
+      "source": "OpenStreetMap, Wambacher",
+      "fileSha256": "7a42adeb34991b2dffe6c345d5e7c349fc81769da0aa4352c30352a55e1b04e5"
+    },
+    {
+      "iso": "LVA",
+      "country": "拉脱维亚",
+      "year": "2021",
+      "boundaryId": "LVA-ADM1-71098776",
+      "url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/LVA/ADM1/geoBoundaries-LVA-ADM1_simplified.geojson",
+      "download": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/LVA/ADM1/geoBoundaries-LVA-ADM1_simplified.geojson",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "source": "Geoportal of Latvia",
+      "fileSha256": "ec6d031cb939b2269f5327f5353504f6598d1e561deb346e096387eaf3d97885"
+    },
+    {
+      "iso": "HYDRO",
+      "country": "内陆水体",
+      "year": "1:10m",
+      "boundaryId": "ca96624a56bd078437bca8184e78163e5039ad19",
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_10m_lakes.geojson",
+      "download": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_10m_lakes.geojson",
+      "license": "Public Domain",
+      "source": "Natural Earth 1:10m lakes",
+      "fileSha256": "58a19e816d7c45ad9565b1114067c9bbddb869f71a792f8f478d30896e528f0b"
+    }
+  ],
+  "referenceDocumentSha256": "04e5e6e1725fd01a8889274ac079a68b75f3a810934cf6d7aab63bab80f4e4f8"
+}
