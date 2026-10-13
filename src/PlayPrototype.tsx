@@ -3,6 +3,8 @@ import { BookOpen, ChevronDown, ChevronRight, Compass, Dice5, LockKeyhole, Searc
 import MapView from './MapView';
 import Attribution from './Attribution';
 import D20RollOverlay from './D20RollOverlay';
+import { characterById } from './opening-characters';
+import { readPreviewCharacterId } from './opening-assignment';
 import { factionOf, searchAtlas } from './atlas';
 import type { AtlasData, AtlasGeometry, CityData, Territory } from './types';
 import './play.css';
@@ -25,6 +27,7 @@ const SITUATION = 1;
 const signed = (value: number) => `${value >= 0 ? '+' : ''}${value}`;
 
 export default function PlayPrototype({ data, geometry, water, cityData, error, onRetry, onOpenDossier }: Props) {
+  const previewCharacter = characterById(readPreviewCharacterId());
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focus, setFocus] = useState<{ id: string; nonce: number } | null>(null);
   const [mapOpen, setMapOpen] = useState(true);
@@ -79,7 +82,7 @@ export default function PlayPrototype({ data, geometry, water, cityData, error, 
       <div className="play-header-actions"><span className="play-demo-label">界面原型 · 本地演示</span><Attribution sources={data?.sources || []} /><a href="#/atlas" className="play-back"><BookOpen size={16} />返回地理志</a></div>
     </header>
     <main className="play-main">
-      <div className="play-intro"><div><span className="play-kicker">PERSONAL ACTION / PLAYER VIEW</span><h1>我的行动与判定</h1><p>这里只展示你的行动、判定条件与私有剧情。角色身份和行动轮次将在加入房间后载入。</p></div></div>
+      <div className="play-intro"><div><span className="play-kicker">PERSONAL ACTION / PLAYER VIEW</span><h1>我的行动与判定</h1><p>{previewCharacter ? `当前试选角色：${previewCharacter.name}。这里只展示你的行动、判定条件与私有剧情；正式身份和行动轮次将在加入房间后由服务端载入。` : '这里只展示你的行动、判定条件与私有剧情。角色身份和行动轮次将在加入房间后载入。'}</p>{previewCharacter && <a className="play-choose-link" href="#/choose">查看我的开局档案</a>}</div></div>
       <div className="play-grid">
         <section className="play-card play-map-card" aria-label="行动地图">
           <div className="play-card-heading"><div><span className="play-index">01 / THEATRE</span><h2>行动地点</h2></div><button className="play-collapse" onClick={() => setMapOpen(value => !value)} aria-expanded={mapOpen} aria-controls="play-map-body"><span>{mapOpen ? '收起地图' : '展开地图'}</span><ChevronDown size={17} /></button></div>
