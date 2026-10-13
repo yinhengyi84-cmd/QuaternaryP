@@ -20,3 +20,4 @@
 .play-waiting{display:flex;align-items:center;gap:10px;margin:0 22px 22px;padding:13px 15px;border:1px solid #9fb28d55;background:#95ad8710;color:#c7d1ba;font-size:11px;line-height:1.8}
 .play-waiting svg{flex:none;color:#cbbd91}
 @media(max-width:760px){.play-grid{margin-top:18px}.play-intro p{max-width:340px}.play-waiting{margin:0 14px 17px}}
+.play-draw-link{display:inline-block;margin-top:11px;color:#dcc38c;font-size:11px;text-decoration:underline;text-underline-offset:4px}
