@@ -23,6 +23,6 @@ if not exist dist\index.html (
     exit /b 1
   )
 )
-echo 极北铁幕地图正在启动。
+echo 魔道祖师地图正在启动。
 call npm.cmd start
 pause

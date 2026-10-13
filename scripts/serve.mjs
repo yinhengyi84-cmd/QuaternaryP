@@ -26,7 +26,7 @@ const server=http.createServer(async(req,res)=>{
 });
 server.on('error',error=>{console.error(error.code==='EADDRINUSE'?'5173 端口已使用。请先关闭已有地图启动窗口。':error.message);process.exitCode=1;});
 server.listen(port,'0.0.0.0',()=>{
-  console.log(`\n极北铁幕地图\n  电脑访问：http://localhost:${port}/`);
+  console.log(`\n魔道祖师地图\n  电脑访问：http://localhost:${port}/`);
   for(const addresses of Object.values(os.networkInterfaces()))for(const address of addresses||[]){if(address.family==='IPv4'&&!address.internal)console.log(`  手机访问：http://${address.address}:${port}/`);}
   console.log('\n手机与电脑连接同一 Wi-Fi；保持本窗口打开，Ctrl+C 停止。\n');
 });

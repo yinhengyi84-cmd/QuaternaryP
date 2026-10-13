@@ -8,13 +8,13 @@ from collections import Counter
 from xml.etree import ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
-BASE=ROOT.parent
+BASE=ROOT.parents[1]
 CACHE=ROOT/'.cache/boundaries'
 OUT=ROOT/'public/data'
 OUT.mkdir(parents=True,exist_ok=True)
 records=json.loads((BASE/'.gazetteer-work/all-records.json').read_text(encoding='utf-8'))
 by_code={r['code']:r for r in records}
-doc=BASE/'极北铁幕_六国地理志_逐地块版.docx'
+doc=BASE/'魔道祖师_六国地理志_逐地块版.docx'
 ns={'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
 with ZipFile(doc) as z:
     table=ET.fromstring(z.read('word/document.xml')).find('.//w:tbl',ns)
@@ -155,7 +155,7 @@ for feature in water_data['features']:
         water_features.append({'type':'Feature','properties':{'id':str(feature['properties'].get('ne_id',len(water_features))),'name':feature['properties'].get('name','')},'geometry':{'type':g['type'],'coordinates':rounded(g['coordinates'])}})
 (OUT/'water.geojson').write_text(json.dumps({'type':'FeatureCollection','features':water_features},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
 sources.append({'iso':'HYDRO','country':'内陆水体','year':'1:10m','boundaryId':water_source['commit'],'url':water_source['url'],'download':water_source['url'],'license':water_source['license'],'source':water_source['source'],'fileSha256':hashlib.sha256((CACHE/'water.geojson').read_bytes()).hexdigest()})
-atlas={'schemaVersion':1,'title':'极北铁幕','records':records,'territories':territories,'sources':sources,'reconciliation':reconciliation}
+atlas={'schemaVersion':1,'title':'魔道祖师','records':records,'territories':territories,'sources':sources,'reconciliation':reconciliation}
 (OUT/'atlas.json').write_text(json.dumps(atlas,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
 (OUT/'geometry.geojson').write_text(json.dumps({'type':'FeatureCollection','features':features},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
 (OUT/'boundary-manifest.json').write_text(json.dumps({'sources':sources,'referenceDocumentSha256':hashlib.sha256(doc.read_bytes()).hexdigest()},ensure_ascii=False,indent=2),encoding='utf-8')
