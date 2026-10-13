@@ -33,3 +33,23 @@ test('手机开场入口不横向溢出', async ({ page }) => {
   await expect(page.getByRole('link', { name: /进入随机抽取/ })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
+
+test('手机玩家页可查看本人角色，关闭后仍停留在判定页面', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/#/choose');
+  await page.getByRole('button', { name: '查看蓝忘机角色档案' }).click();
+  await page.getByRole('button', { name: '确定选择蓝忘机' }).click();
+  await page.goto('/#/play');
+  await page.getByLabel('你打算做什么？').fill('先检查补给线。');
+  await page.getByRole('button', { name: '我的角色' }).click();
+  const dialog = page.getByRole('dialog', { name: '蓝忘机' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText('皇帝 · 逆位')).toBeVisible();
+  await expect(dialog.getByText('初始阵营 · 苏俄')).toBeVisible();
+  await expect(dialog.getByText('魏无羡')).toHaveCount(0);
+  await dialog.getByRole('button', { name: '返回我的判定' }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByLabel('你打算做什么？')).toHaveValue('先检查补给线。');
+  await expect(page.getByRole('button', { name: '我的角色' })).toBeFocused();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});

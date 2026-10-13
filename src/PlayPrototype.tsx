@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, ChevronRight, Compass, Dice5, LockKeyhole, Search, Send, X } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronRight, Compass, Dice5, LockKeyhole, Search, Send, UserRound, X } from 'lucide-react';
 import MapView from './MapView';
 import Attribution from './Attribution';
 import D20RollOverlay from './D20RollOverlay';
 import InitialFactionBadge from './InitialFactionBadge';
+import PlayerRoleDialog from './PlayerRoleDialog';
 import { characterById } from './opening-characters';
 import { readPreviewAssignment } from './opening-assignment';
 import { factionOf, searchAtlas } from './atlas';
@@ -39,6 +40,8 @@ export default function PlayPrototype({ data, geometry, water, cityData, error, 
   const [die, setDie] = useState<number | null>(null);
   const [rollOpen, setRollOpen] = useState(false);
   const [rollRevealed, setRollRevealed] = useState(false);
+  const [roleOpen, setRoleOpen] = useState(false);
+  const roleButtonRef = useRef<HTMLButtonElement>(null);
   const storyRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (stage !== 'submitted') return;
@@ -81,7 +84,16 @@ export default function PlayPrototype({ data, geometry, water, cityData, error, 
   return <div className="play-page">
     <header className="play-header">
       <div className="play-brand"><span className="play-brand-icon"><Compass size={25} /></span><div><small>魔道祖师 / PLAYER VIEW</small><strong>行动与判定</strong></div></div>
-      <div className="play-header-actions"><span className="play-demo-label">界面原型 · 本地演示</span><Attribution sources={data?.sources || []} /><a href="#/atlas" className="play-back"><BookOpen size={16} />返回地理志</a></div>
+      <div className="play-header-actions">
+        <span className="play-demo-label">界面原型 · 本地演示</span>
+        {previewCharacter ? (
+          <button ref={roleButtonRef} className="play-role-trigger" type="button" onClick={() => setRoleOpen(true)}>
+            <UserRound size={17} />我的角色
+          </button>
+        ) : (
+          <a className="play-role-trigger" href="#/opening"><UserRound size={17} />开局选角色</a>
+        )}
+      </div>
     </header>
     <main className="play-main">
       <div className="play-intro">
@@ -89,7 +101,7 @@ export default function PlayPrototype({ data, geometry, water, cityData, error, 
           <span className="play-kicker">PERSONAL ACTION / PLAYER VIEW</span>
           <h1>我的行动与判定</h1>
           <p>{previewCharacter ? `当前本地角色：${previewCharacter.name}。这里只有你的行动、判定条件与私有剧情；正式身份和行动轮次将在加入房间后由服务端载入。` : '这里只有你的行动、判定条件与私有剧情。角色身份和行动轮次将在加入房间后载入。'}</p>
-          {previewCharacter && <div className="play-identity"><InitialFactionBadge factionId={previewCharacter.initialFactionId} /><a className="play-opening-link" href={previewAssignment?.mode === 'draw' ? '#/draw' : '#/choose'}>查看我的开局档案</a></div>}
+          {previewCharacter && <div className="play-identity"><InitialFactionBadge factionId={previewCharacter.initialFactionId} /></div>}
         </div>
       </div>
       <div className="play-grid">
@@ -117,8 +129,24 @@ export default function PlayPrototype({ data, geometry, water, cityData, error, 
 
         <section className="play-card play-story-card" aria-label="判定结果与剧情" ref={storyRef} tabIndex={-1}><div className="play-card-heading"><div><span className="play-index">04 / CHRONICLE</span><h2>我的判定与剧情</h2></div><span className="play-manuscript">PRIVATE RECORD</span></div>{stage === 'resolved' ? <><div className={`play-outcome ${success ? 'success' : 'failure'}`}><span>{outcome}</span><strong>D20 {die} {signed(ROLE_MODIFIER)} {signed(SITUATION)} = {total}</strong></div><p className="play-story-text">{success ? `在${place}，你的部署取得了突破。传令兵带回消息：道路暂时畅通，但新的局势已在边界另一侧酝酿。` : `在${place}，计划遭遇阻碍。前线的消息比预想更迟抵达，局势迫使你重新权衡下一步。`}</p><p className="play-disclaimer">以上为固定模板示例，尚未接入剧情智能体，也未存档或广播。</p><div className="play-waiting" role="status"><LockKeyhole size={16}/><span>本次判定已完成，等待 DM 的下一步安排。你无需查看其他玩家的行动。</span></div></> : <div className="play-story-placeholder"><BookOpen size={29} /><p>行动判定完成后，这里只显示你的结果与剧情文字。</p><small>正式版会保存你的行动、判定依据、骰点和经审核的剧情。</small></div>}</section>
       </div>
-      <footer className="play-footer">魔道祖师 · Play 界面原型 <span>尚未接入加入房间、角色身份、真实 DM 审核、AI 生成或联机同步</span></footer>
+      <footer className="play-footer">
+        <span>魔道祖师 · Play 界面原型</span>
+        <span>尚未接入加入房间、真实 DM 审核、AI 生成或联机同步</span>
+        <div className="play-footer-links">
+          <Attribution sources={data?.sources || []} />
+          <a href="#/atlas"><BookOpen size={15} />查看地理志地图</a>
+        </div>
+      </footer>
     </main>
+    {roleOpen && previewCharacter && (
+      <PlayerRoleDialog
+        character={previewCharacter}
+        onClose={() => {
+          setRoleOpen(false);
+          window.requestAnimationFrame(() => roleButtonRef.current?.focus());
+        }}
+      />
+    )}
     {rollOpen && die !== null && total !== null && <D20RollOverlay die={die} total={total} dc={DC} roleModifier={ROLE_MODIFIER} situationModifier={SITUATION} outcome={outcome} success={success} revealed={rollRevealed} onClose={closeRoll} />}
   </div>;
 }

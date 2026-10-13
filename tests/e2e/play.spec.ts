@@ -64,8 +64,25 @@ test('手机减少动态效果时仍能看到投掷结果', async ({ page }) => 
 });
 
 test('旧来源页入口消失，许可说明仍可访问', async ({ page }) => {
-  await page.getByRole('link', { name: '返回地理志' }).click();
+  await page.getByRole('link', { name: '查看地理志地图' }).click();
   await expect(page.getByRole('button', { name: '版图与资料' })).toHaveCount(0);
   await page.getByLabel('地图数据来源与许可').click();
   await expect(page.getByText('真实行政边界采用 geoBoundaries gbOpen 的固定版本')).toBeVisible();
+});
+
+test('手机地图导航保留文字，来源说明与开局入口各司其职', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/#/atlas');
+  await expect(page.getByRole('link', { name: '开局选角色' })).toBeVisible();
+  await expect(page.getByText('地图来源', { exact: true })).toBeVisible();
+  await page.getByLabel('地图数据来源与许可').click();
+  await expect(page.getByText('真实行政边界采用 geoBoundaries gbOpen 的固定版本')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await page.setViewportSize({ width: 320, height: 844 });
+  const search = await page.locator('.topbar .search-wrap').boundingBox();
+  const source = await page.locator('.topbar .attribution').boundingBox();
+  expect(search!.x + search!.width).toBeLessThanOrEqual(source!.x);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+  await page.getByRole('link', { name: '开局选角色' }).click();
+  await expect(page.getByRole('heading', { name: /命运，由你选择/ })).toBeVisible();
 });

@@ -3,7 +3,10 @@ import type { Source } from './types';
 
 export default function Attribution({ sources }: { sources: Source[] }) {
   return <details className="attribution">
-    <summary aria-label="地图数据来源与许可" title="地图数据来源与许可"><Info size={18} /></summary>
+    <summary aria-label="地图数据来源与许可" title="地图数据来源与许可">
+      <Info size={18} />
+      <span>地图来源</span>
+    </summary>
     <div className="attribution-popover">
       <strong>地图数据来源与许可</strong>
       <p>真实行政边界采用 geoBoundaries gbOpen 的固定版本；湖泊来自 Natural Earth。各地区来源与许可如下。</p>

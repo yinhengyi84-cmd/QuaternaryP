@@ -22,3 +22,82 @@
 @media(max-width:760px){.play-grid{margin-top:18px}.play-intro p{max-width:340px}.play-waiting{margin:0 14px 17px}}
 .play-identity{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:11px}
 .play-opening-link{color:#dcc38c;font-size:11px;text-decoration:underline;text-underline-offset:4px}
+
+/* 地图来源始终以文字标示，避免信息图标被误认为玩法说明。 */
+.attribution summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  min-height: 36px;
+  padding: 0 10px;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.play-role-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid #c7b58a77;
+  border-radius: 3px;
+  background: #c7b58a15;
+  color: #ead9b4;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.play-role-trigger:hover {
+  border-color: #c7b58ab3;
+  background: #c7b58a25;
+}
+
+.play-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 9px;
+  border: 1px solid #ffffff24;
+  border-radius: 3px;
+  color: #bfc9b5;
+  white-space: nowrap;
+}
+
+.play-footer .attribution-popover {
+  top: auto;
+  bottom: 43px;
+  right: auto;
+  left: 0;
+}
+
+@media (max-width: 760px) {
+  .play-header {
+    gap: 10px;
+  }
+
+  .play-role-trigger {
+    min-height: 42px;
+    padding: 0 10px;
+  }
+
+  .play-footer-links {
+    margin-top: 13px;
+    flex-wrap: wrap;
+  }
+
+  .play-footer .attribution summary,
+  .play-footer-links a {
+    min-height: 44px;
+  }
+}

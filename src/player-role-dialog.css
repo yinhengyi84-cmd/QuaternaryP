@@ -1,0 +1,106 @@
+.play-role-dialog {
+  width: min(420px, calc(100vw - 28px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid #c7b58a88;
+  border-radius: 7px;
+  background: #1b292d;
+  color: #e7ddc5;
+  box-shadow: 0 24px 70px #000b;
+}
+
+.play-role-dialog::backdrop {
+  background: #071015c9;
+  backdrop-filter: blur(3px);
+}
+
+.play-role-sheet {
+  padding: 19px 23px 25px;
+  text-align: center;
+}
+
+.play-role-sheet-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #b3a77e;
+  font: 10px Georgia, serif;
+  letter-spacing: 1.7px;
+}
+
+.play-role-sheet-top button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: #b7c1b2;
+}
+
+.play-role-symbol {
+  display: grid;
+  place-items: center;
+  width: 82px;
+  height: 82px;
+  margin: 12px auto 18px;
+  border: 1px solid;
+  border-radius: 50%;
+  font: 29px Georgia, serif;
+  box-shadow: inset 0 0 0 8px #ffffff06;
+}
+
+.play-role-sheet h2 {
+  margin: 0;
+  font: 400 29px var(--serif);
+  letter-spacing: 4px;
+}
+
+.play-role-tarot {
+  margin: 10px 0 18px;
+  color: #cdbd96;
+  font-size: 12px;
+}
+
+.play-role-sheet .initial-faction-badge {
+  margin: 0 auto;
+}
+
+.play-role-description {
+  margin: 22px 0 0;
+  color: #d3d8c9;
+  font-size: 13px;
+  line-height: 1.9;
+  text-align: left;
+}
+
+.play-role-note {
+  margin: 18px 0 0;
+  color: #8fa494;
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.play-role-done {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 23px;
+  border: 1px solid #c7b58a8c;
+  border-radius: 3px;
+  background: #c7b58a18;
+  color: #eadbb3;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .play-role-dialog {
+    width: 100%;
+    max-height: min(82dvh, 650px);
+    margin: auto 0 0;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .play-role-sheet {
+    padding: 18px 20px max(25px, env(safe-area-inset-bottom));
+  }
+}

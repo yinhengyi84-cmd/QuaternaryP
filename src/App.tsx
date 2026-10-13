@@ -51,7 +51,7 @@ export default function App() {
         {query?<button className="clear-search" aria-label="清空搜索" onClick={()=>{setQuery('');inputRef.current?.focus();}}><X size={14}/></button>:<kbd>Ctrl K</kbd>}
         {searchOpen&&query&&<div className="search-results" id="search-results" role="listbox"><div className="search-heading">{results.length?`找到 ${results.length} 个结果`:'未找到对应地区'}</div>{results.map((result,i)=><button key={result.city?.id||result.territory?.id||result.record?.code} role="option" aria-selected={activeResult===i} id={`result-${i}`} className={activeResult===i?'active':''} onMouseEnter={()=>setActiveResult(i)} onMouseDown={e=>e.preventDefault()} onClick={()=>chooseResult(i)}><span className="result-dot" style={{background:factionOf((result.territory?.faction||result.record!.code[0]) as FactionId).color}}/><span><strong>{result.city?.name||result.territory?.chineseName||(result.record&&recordDisplayName(result.record))}</strong><small>{result.city?`${result.city.europe} · ${result.territory?.name}`:result.territory?.name||result.record?.europe}</small></span><ChevronRight size={15}/></button>)}</div>}
       </div>
-      <a className="play-entry" href="#/opening"><Dice5 size={17}/>开局角色体验</a>
+      <a className="play-entry" href="#/opening"><Dice5 size={17}/>开局选角色</a>
       <Attribution sources={data?.sources||[]}/>
     </header>
     <div className="workspace">
