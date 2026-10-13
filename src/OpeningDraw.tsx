@@ -21,6 +21,7 @@ export default function OpeningDraw({ gateway = previewDrawGateway }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const revealRef = useRef<HTMLHeadingElement>(null);
+  const drawingRef = useRef(false);
   const role = characterById(snapshot?.assignedCharacterId ?? null);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function OpeningDraw({ gateway = previewDrawGateway }: Props) {
     const unsubscribe = gateway.subscribe?.(next => {
       if (!active) return;
       setSnapshot(next);
-      if (next.stage === 'assigned') setPhase('revealed');
+      if (next.stage === 'assigned' && !drawingRef.current) setPhase('revealed');
     });
     return () => { active = false; unsubscribe?.(); };
   }, [gateway]);
@@ -41,7 +42,10 @@ export default function OpeningDraw({ gateway = previewDrawGateway }: Props) {
   useEffect(() => {
     if (phase !== 'drawing') return;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const timer = window.setTimeout(() => setPhase('revealed'), reducedMotion ? 100 : 1100);
+    const timer = window.setTimeout(() => {
+      drawingRef.current = false;
+      setPhase('revealed');
+    }, reducedMotion ? 100 : 1100);
     return () => window.clearTimeout(timer);
   }, [phase]);
 
@@ -51,13 +55,16 @@ export default function OpeningDraw({ gateway = previewDrawGateway }: Props) {
 
   async function beginDraw() {
     if (snapshot?.stage !== 'choosing' || snapshot.mode !== 'draw' || phase !== 'sealed' || submitting) return;
+    drawingRef.current = true;
     setSubmitting(true);
     setError('');
     try {
       const next = await gateway.requestDraw({ expectedVersion: snapshot.version, requestId: createOpeningRequestId() });
       setSnapshot(next);
       if (next.stage === 'assigned' && next.assignedCharacterId) setPhase('drawing');
+      else drawingRef.current = false;
     } catch (reason) {
+      drawingRef.current = false;
       setError(reason instanceof Error ? reason.message : '抽取失败，请重试。');
       try {
         const latest = await gateway.load();
@@ -73,6 +80,7 @@ export default function OpeningDraw({ gateway = previewDrawGateway }: Props) {
 
   function resetPreview() {
     if (snapshot?.source !== 'preview') return;
+    drawingRef.current = false;
     clearPreviewAssignment('draw');
     setSnapshot({ ...snapshot, stage: 'choosing', assignedCharacterId: null, version: 0 });
     setPhase('sealed');

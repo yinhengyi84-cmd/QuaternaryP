@@ -88,6 +88,15 @@ export default function ChooseCharacter({ gateway = previewChooseGateway }: Prop
       if (next.stage === 'assigned') setRevealing(true);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : '提交失败，请重试。');
+      try {
+        const latest = await gateway.load();
+        setSnapshot(latest);
+        if (latest.stage !== 'choosing' || !latest.availableCharacterIds.includes(inspectedId)) {
+          setInspectedId(null);
+        }
+      } catch {
+        // 房间暂时不可达时保留当前档案，玩家可在网络恢复后重试。
+      }
     } finally {
       setSubmitting(false);
     }

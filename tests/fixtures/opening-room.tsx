@@ -27,6 +27,10 @@ const gateway: OpeningAssignmentGateway = {
     if (snapshot.stage !== 'choosing' || expectedVersion !== snapshot.version || !snapshot.availableCharacterIds.includes(characterId)) {
       throw new Error('角色不可选或状态已变化。');
     }
+    if (characterId === 'gao-zhan') {
+      publish({ ...snapshot, availableCharacterIds: snapshot.availableCharacterIds.filter(id => id !== characterId), version: snapshot.version + 1 });
+      throw new Error('高战刚被其他玩家占用。');
+    }
     pendingChoice = characterId;
     return publish({ ...snapshot, stage: 'pending-dm', version: snapshot.version + 1 });
   },
