@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ArrowLeft, ArrowRight, Compass, LockKeyhole, RotateCcw, Sparkles, X } from 'lucide-react';
 import TarotArtwork from './TarotArtwork';
+import InitialFactionBadge from './InitialFactionBadge';
 import { CHARACTERS, characterById, type CharacterId } from './opening-characters';
 import {
-  clearPreviewChoice,
-  previewOpeningGateway,
+  clearPreviewAssignment,
+  createOpeningRequestId,
+  previewChooseGateway,
   type OpeningAssignmentGateway,
   type OpeningSnapshot,
 } from './opening-assignment';
@@ -12,14 +14,7 @@ import './choose-character.css';
 
 type Props = { gateway?: OpeningAssignmentGateway };
 
-function createRequestId(): string {
-  // 局域网 HTTP 页面也能使用 getRandomValues，避免依赖仅限安全上下文的 randomUUID。
-  const bytes = new Uint32Array(4);
-  window.crypto.getRandomValues(bytes);
-  return [...bytes].map(value => value.toString(16).padStart(8, '0')).join('');
-}
-
-export default function ChooseCharacter({ gateway = previewOpeningGateway }: Props) {
+export default function ChooseCharacter({ gateway = previewChooseGateway }: Props) {
   const [snapshot, setSnapshot] = useState<OpeningSnapshot | null>(null);
   const [inspectedId, setInspectedId] = useState<CharacterId | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -86,7 +81,7 @@ export default function ChooseCharacter({ gateway = previewOpeningGateway }: Pro
       const next = await gateway.requestChoice({
         characterId: inspectedId,
         expectedVersion: snapshot.version,
-        requestId: createRequestId(),
+        requestId: createOpeningRequestId(),
       });
       setSnapshot(next);
       setInspectedId(null);
@@ -100,7 +95,7 @@ export default function ChooseCharacter({ gateway = previewOpeningGateway }: Pro
 
   function resetPreview() {
     if (snapshot?.source !== 'preview') return;
-    clearPreviewChoice();
+    clearPreviewAssignment('choose');
     setSnapshot({ ...snapshot, stage: 'choosing', assignedCharacterId: null, version: 0 });
     setError('');
   }
@@ -135,7 +130,7 @@ export default function ChooseCharacter({ gateway = previewOpeningGateway }: Pro
                 style={{ '--card-accent': character.accent, '--card-index': index } as CSSProperties}
               >
                 <div className="choice-card-art"><TarotArtwork character={character} /><span className="choice-position">{character.orientation}</span></div>
-                <div className="choice-card-copy"><small>ARCANA {character.roman}</small><strong>{character.name}</strong><span>{character.tarot} · {character.tarotEnglish}</span><p>{character.description}</p><em>{available ? '展开档案 →' : '已被选择'}</em></div>
+                <div className="choice-card-copy"><small>ARCANA {character.roman}</small><strong>{character.name}</strong><span>{character.tarot} · {character.tarotEnglish}</span><InitialFactionBadge factionId={character.initialFactionId} compact /><p>{character.description}</p><em>{available ? '展开档案 →' : '已被选择'}</em></div>
               </button>;
             })}
           </div>
@@ -149,18 +144,18 @@ export default function ChooseCharacter({ gateway = previewOpeningGateway }: Pro
         {snapshot?.stage === 'assigned' && selectedCharacter && <section className="choice-result" aria-label="我的角色" style={{ '--card-accent': selectedCharacter.accent } as CSSProperties}>
           {revealing ? <div className="choice-reveal" role="status"><div className="choice-reveal-seal">✦</div><span>身份封印正在开启…</span></div> : <>
             <div className="choice-result-art"><TarotArtwork character={selectedCharacter} /></div>
-            <div className="choice-result-copy"><span className="choice-kicker">YOUR ROLE / 你的角色</span><h2 ref={resultTitleRef} tabIndex={-1}>{selectedCharacter.name}</h2><strong>{selectedCharacter.tarot} · {selectedCharacter.orientation}</strong><p>{selectedCharacter.description}</p><a href="#/play" className="choice-primary">进入我的 Play 页面<ArrowRight size={17} /></a>{snapshot.source === 'preview' && <button className="choice-reset" type="button" onClick={resetPreview}><RotateCcw size={14} />重新选择（仅本地预览）</button>}</div>
+            <div className="choice-result-copy"><span className="choice-kicker">YOUR ROLE / 你的角色</span><h2 ref={resultTitleRef} tabIndex={-1}>{selectedCharacter.name}</h2><strong>{selectedCharacter.tarot} · {selectedCharacter.orientation}</strong><InitialFactionBadge factionId={selectedCharacter.initialFactionId} /><p>{selectedCharacter.description}</p><a href="#/play" className="choice-primary">进入我的 Play 页面<ArrowRight size={17} /></a>{snapshot.source === 'preview' && <button className="choice-reset" type="button" onClick={resetPreview}><RotateCcw size={14} />重新选择（仅本地预览）</button>}</div>
           </>}
         </section>}
       </main>
 
-      <footer className="choice-footer"><span>MODAO ZUSHI · THE OPENING</span><span>角色不与阵营永久绑定</span></footer>
+      <footer className="choice-footer"><span>MODAO ZUSHI · THE OPENING</span><a href="#/opening">返回开局方式</a><span>角色不与阵营永久绑定</span></footer>
 
       {inspectedCharacter && <div className="choice-modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget && !submitting) closeDetails(); }}>
         <div className="choice-modal" role="dialog" aria-modal="true" aria-labelledby="choice-dialog-title" ref={dialogRef} tabIndex={-1} style={{ '--card-accent': inspectedCharacter.accent } as CSSProperties}>
           <button className="choice-modal-close" type="button" aria-label="关闭角色档案" onClick={closeDetails} disabled={submitting}><X size={18} /></button>
           <div className="choice-modal-art"><TarotArtwork character={inspectedCharacter} /></div>
-          <div className="choice-modal-copy"><span className="choice-kicker">ARCANA {inspectedCharacter.roman} / {inspectedCharacter.orientation}</span><h2 id="choice-dialog-title">{inspectedCharacter.name}</h2><strong>{inspectedCharacter.tarot} <span>{inspectedCharacter.tarotEnglish}</span></strong><p>{inspectedCharacter.description}</p>{error && <p className="choice-modal-error" role="alert">{error}</p>}<div className="choice-modal-actions"><button className="choice-secondary" type="button" onClick={closeDetails} disabled={submitting}><ArrowLeft size={15} />返回六人列表</button><button className="choice-primary" type="button" onClick={confirmChoice} disabled={submitting}>{submitting ? '正在提交…' : `确定选择${inspectedCharacter.name}`}<ArrowRight size={17} /></button></div><small>{snapshot?.source === 'preview' ? '本地试选可重新选择；正式房间按服务端与 DM 规则确认。' : '提交后等待 DM 与房间服务端确认。'}</small></div>
+          <div className="choice-modal-copy"><span className="choice-kicker">ARCANA {inspectedCharacter.roman} / {inspectedCharacter.orientation}</span><h2 id="choice-dialog-title">{inspectedCharacter.name}</h2><strong>{inspectedCharacter.tarot} <span>{inspectedCharacter.tarotEnglish}</span></strong><InitialFactionBadge factionId={inspectedCharacter.initialFactionId} /><p>{inspectedCharacter.description}</p>{error && <p className="choice-modal-error" role="alert">{error}</p>}<div className="choice-modal-actions"><button className="choice-secondary" type="button" onClick={closeDetails} disabled={submitting}><ArrowLeft size={15} />返回六人列表</button><button className="choice-primary" type="button" onClick={confirmChoice} disabled={submitting}>{submitting ? '正在提交…' : `确定选择${inspectedCharacter.name}`}<ArrowRight size={17} /></button></div><small>{snapshot?.source === 'preview' ? '本地试选可重新选择；正式房间按服务端与 DM 规则确认。' : '提交后等待 DM 与房间服务端确认。'}</small></div>
         </div>
       </div>}
     </div>

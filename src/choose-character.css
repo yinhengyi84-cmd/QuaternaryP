@@ -108,6 +108,7 @@
 .choice-card-copy small { color: var(--card-accent); font: 10px Georgia, serif; letter-spacing: .18em; }
 .choice-card-copy strong { margin: 10px 0 8px; color: #f0e8d4; font: 400 26px var(--serif); letter-spacing: .08em; }
 .choice-card-copy > span { color: var(--card-accent); font-size: 11px; line-height: 1.5; }
+.choice-card-copy > .initial-faction-badge { margin-top: 10px; color: #f0e9d7; }
 .choice-card-copy p { margin: 16px 0 auto; color: #acbbae; font-size: 10px; line-height: 1.8; }
 .choice-card-copy em { margin-top: 14px; color: #dbc99e; font-size: 10px; font-style: normal; letter-spacing: .12em; }
 .choice-source-note { margin: 21px 0 0; color: #81978b; font-size: 10px; line-height: 1.8; text-align: right; }
@@ -133,6 +134,7 @@
 .choice-result-copy { flex: 1; min-width: 0; }
 .choice-result-copy h2 { margin: 16px 0; color: #f3e7ce; font: 400 43px var(--serif); letter-spacing: .17em; }
 .choice-result-copy > strong { color: var(--card-accent); font-size: 14px; font-weight: 400; }
+.choice-result-copy > .initial-faction-badge { display: flex; margin-top: 15px; }
 .choice-result-copy p { color: #bfccbc; font-size: 13px; line-height: 2; margin: 26px 0 30px; }
 .choice-primary, .choice-secondary, .choice-reset { display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
 .choice-primary { min-height: 46px; padding: 11px 17px; border: 1px solid #e2d0a0; background: #cbb78a; color: #172429; font-size: 12px; font-weight: 600; letter-spacing: .08em; }
@@ -154,6 +156,7 @@
 .choice-modal-copy h2 { margin: 18px 0 8px; color: #f2e7d2; font: 400 43px var(--serif); letter-spacing: .17em; }
 .choice-modal-copy > strong { color: var(--card-accent); font-size: 16px; font-weight: 400; }
 .choice-modal-copy > strong span { font: 11px Georgia, serif; letter-spacing: .08em; }
+.choice-modal-copy > .initial-faction-badge { display: flex; margin-top: 17px; }
 .choice-modal-copy p { margin: 28px 0 33px; color: #c1cbbd; font-size: 13px; line-height: 2.1; }
 .choice-modal-copy .choice-modal-error { margin: 0 0 16px; color: #f0ad9e; font-size: 11px; }
 .choice-modal-actions { display: flex; flex-wrap: wrap; gap: 9px; }

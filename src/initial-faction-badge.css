@@ -1,0 +1,16 @@
+.initial-faction-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 8px;
+  border: 1px solid color-mix(in srgb, var(--faction-color), transparent 35%);
+  background: color-mix(in srgb, var(--faction-color), transparent 84%);
+  color: #f0e9d7;
+  font-size: 10px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.initial-faction-badge svg { flex: none; color: var(--faction-color); fill: color-mix(in srgb, var(--faction-color), transparent 75%); }
+.initial-faction-badge-compact { padding: 3px 6px; font-size: 9px; }

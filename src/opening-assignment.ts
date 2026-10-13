@@ -29,57 +29,105 @@ export type DrawRequest = {
 export interface OpeningAssignmentGateway {
   load(): Promise<OpeningSnapshot>;
   requestChoice(request: ChoiceRequest): Promise<OpeningSnapshot>;
-  requestDraw?(request: DrawRequest): Promise<OpeningSnapshot>;
+  requestDraw(request: DrawRequest): Promise<OpeningSnapshot>;
   subscribe?(onChange: (snapshot: OpeningSnapshot) => void): () => void;
 }
 
-const PREVIEW_KEY = 'modaozushi.opening-choice.preview.v1';
+export function createOpeningRequestId(): string {
+  // 局域网 HTTP 页面也能使用 getRandomValues，不依赖安全上下文中的 randomUUID。
+  const bytes = new Uint32Array(4);
+  window.crypto.getRandomValues(bytes);
+  return [...bytes].map(value => value.toString(16).padStart(8, '0')).join('');
+}
 
-export function readPreviewCharacterId(): CharacterId | null {
+type PreviewAssignment = { mode: OpeningMode; assignedCharacterId: CharacterId | null };
+const PREVIEW_KEY = 'modaozushi.opening.preview.v2';
+
+export function readPreviewAssignment(): PreviewAssignment | null {
   try {
     const saved = window.sessionStorage.getItem(PREVIEW_KEY);
-    return characterById(saved)?.id ?? null;
+    if (!saved) return null;
+    const value: unknown = JSON.parse(saved);
+    if (!value || typeof value !== 'object') return null;
+    const assignment = value as Partial<PreviewAssignment>;
+    if (assignment.mode !== 'choose' && assignment.mode !== 'draw') return null;
+    if (assignment.assignedCharacterId !== null && !characterById(assignment.assignedCharacterId ?? null)) return null;
+    return { mode: assignment.mode, assignedCharacterId: assignment.assignedCharacterId ?? null };
   } catch {
     return null;
   }
 }
 
-export function clearPreviewChoice(): void {
+export function readPreviewCharacterId(): CharacterId | null {
+  return readPreviewAssignment()?.assignedCharacterId ?? null;
+}
+
+function savePreviewAssignment(assignment: PreviewAssignment): void {
   try {
-    window.sessionStorage.removeItem(PREVIEW_KEY);
+    window.sessionStorage.setItem(PREVIEW_KEY, JSON.stringify(assignment));
   } catch {
-    // 禁用会话存储时，页面仍可通过内存状态完成预览。
+    // 浏览器禁用会话存储时，当前页面仍能完成一次预览。
   }
 }
 
-function previewSnapshot(): OpeningSnapshot {
-  const assignedCharacterId = readPreviewCharacterId();
+export function clearPreviewAssignment(mode: OpeningMode): void {
+  savePreviewAssignment({ mode, assignedCharacterId: null });
+}
+
+function previewSnapshot(mode: OpeningMode): OpeningSnapshot {
+  const saved = readPreviewAssignment();
+  const assignedCharacterId = saved?.mode === mode ? saved.assignedCharacterId : null;
   return {
-    source: 'preview', mode: 'choose', stage: assignedCharacterId ? 'assigned' : 'choosing',
+    source: 'preview', mode, stage: assignedCharacterId ? 'assigned' : 'choosing',
     roomId: null, seatNumber: null, isMyTurn: true,
     availableCharacterIds: CHARACTERS.map(character => character.id),
     assignedCharacterId, version: assignedCharacterId ? 1 : 0,
   };
 }
 
-// 此适配器只服务单机预览；正式房间替换为 HTTP/WebSocket 适配器。
-export const previewOpeningGateway: OpeningAssignmentGateway = {
-  async load() {
-    return previewSnapshot();
-  },
-  async requestChoice({ characterId, expectedVersion }) {
-    const snapshot = previewSnapshot();
-    if (snapshot.stage !== 'choosing' || expectedVersion !== snapshot.version) {
-      throw new Error('选角状态已变化，请刷新页面后重试。');
-    }
-    if (!characterById(characterId)) {
-      throw new Error('角色编号无效。');
-    }
-    try {
-      window.sessionStorage.setItem(PREVIEW_KEY, characterId);
-    } catch {
-      // 浏览器禁止存储时，由调用方维持本页已选状态。
-    }
-    return { ...snapshot, stage: 'assigned', assignedCharacterId: characterId, version: 1 };
-  },
-};
+function assertReady(snapshot: OpeningSnapshot, expectedVersion: number): void {
+  if (snapshot.stage !== 'choosing' || snapshot.version !== expectedVersion) {
+    throw new Error('开局状态已变化，请刷新页面后重试。');
+  }
+}
+
+function drawCharacter(ids: readonly CharacterId[]): CharacterId {
+  if (!ids.length) throw new Error('可抽取的角色已用完。');
+  // 拒绝超出整除范围的随机数，避免取模偏差；正式房间必须改由服务端抽取。
+  const range = 0x100000000;
+  const limit = range - (range % ids.length);
+  const sample = new Uint32Array(1);
+  do {
+    window.crypto.getRandomValues(sample);
+  } while (sample[0] >= limit);
+  return ids[sample[0] % ids.length];
+}
+
+// 两种本地预览共用一份身份记录；正式房间通过 HTTP/WebSocket 适配同一接口。
+export function createPreviewOpeningGateway(mode: OpeningMode): OpeningAssignmentGateway {
+  return {
+    async load() {
+      if (readPreviewAssignment()?.mode !== mode) clearPreviewAssignment(mode);
+      return previewSnapshot(mode);
+    },
+    async requestChoice({ characterId, expectedVersion }) {
+      if (mode !== 'choose') throw new Error('此房间不允许自主选择。');
+      const snapshot = previewSnapshot(mode);
+      assertReady(snapshot, expectedVersion);
+      if (!snapshot.availableCharacterIds.includes(characterId)) throw new Error('此角色目前不可选。');
+      savePreviewAssignment({ mode, assignedCharacterId: characterId });
+      return { ...snapshot, stage: 'assigned', assignedCharacterId: characterId, version: snapshot.version + 1 };
+    },
+    async requestDraw({ expectedVersion }) {
+      if (mode !== 'draw') throw new Error('此房间不允许抽取。');
+      const snapshot = previewSnapshot(mode);
+      assertReady(snapshot, expectedVersion);
+      const assignedCharacterId = drawCharacter(snapshot.availableCharacterIds);
+      savePreviewAssignment({ mode, assignedCharacterId });
+      return { ...snapshot, stage: 'assigned', assignedCharacterId, version: snapshot.version + 1 };
+    },
+  };
+}
+
+export const previewChooseGateway = createPreviewOpeningGateway('choose');
+export const previewDrawGateway = createPreviewOpeningGateway('draw');

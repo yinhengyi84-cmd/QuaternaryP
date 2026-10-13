@@ -4,6 +4,8 @@ import MapView from './MapView';
 import Attribution from './Attribution';
 import PlayPrototype from './PlayPrototype';
 import ChooseCharacter from './ChooseCharacter';
+import OpeningDraw from './OpeningDraw';
+import OpeningEntrance from './OpeningEntrance';
 import { FACTIONS, factionOf, recordDisplayName, searchAtlas } from './atlas';
 import type { AtlasData, AtlasGeometry, CityData, FactionId, GazetteerRecord, Territory } from './types';
 
@@ -19,7 +21,7 @@ export default function App() {
   const [directoryQuery,setDirectoryQuery]=useState('');const [mobileOpen,setMobileOpen]=useState(false);
   const [focus,setFocus]=useState<{id:string;nonce:number}|null>(null);const inputRef=useRef<HTMLInputElement>(null);
   const [route,setRoute]=useState(()=>window.location.hash);
-  const needsAtlas=route!=='#/choose';
+  const needsAtlas=!['#/opening','#/choose','#/draw'].includes(route);
   useEffect(()=>{const sync=()=>setRoute(window.location.hash);window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);
   useEffect(()=>{if(!needsAtlas)return;const controller=new AbortController();setError('');
     Promise.all(['atlas.json','geometry.geojson','water.geojson','cities.json'].map(async file=>{const r=await fetch(`${import.meta.env.BASE_URL}data/${file}`,{signal:controller.signal});if(!r.ok)throw Error('资料文件未能加载');return r.json();}))
@@ -35,7 +37,9 @@ export default function App() {
   function chooseRecord(r:GazetteerRecord) {const territories=data!.territories.filter(t=>t.recordIds.includes(r.code));if(territories.length===1){choose(territories[0].id,true);setRecordCode(r.code);}else{setRecordCode(r.code);setSelectedId(null);setPanel('details');setMobileOpen(true);setSearchOpen(false);}}
   function openPanel(p:Panel){setPanel(p);setMobileOpen(true);setSearchOpen(false);}
   function chooseResult(index:number) {const result=results[index];if(result?.territory)choose(result.territory.id,true);else if(result?.record)chooseRecord(result.record);}
+  if(route==='#/opening')return <OpeningEntrance/>;
   if(route==='#/choose')return <ChooseCharacter/>;
+  if(route==='#/draw')return <OpeningDraw/>;
   if(route==='#/play')return <PlayPrototype data={data} geometry={geometry} water={water} cityData={cityData} error={error} onRetry={()=>setRetry(n=>n+1)} onOpenDossier={id=>{setSelectedId(id);setRecordCode(null);setPanel('details');setMobileOpen(true);window.location.hash='#/atlas';}}/>;
   return <div className="app-shell">
     <header className="topbar">
@@ -47,7 +51,7 @@ export default function App() {
         {query?<button className="clear-search" aria-label="清空搜索" onClick={()=>{setQuery('');inputRef.current?.focus();}}><X size={14}/></button>:<kbd>Ctrl K</kbd>}
         {searchOpen&&query&&<div className="search-results" id="search-results" role="listbox"><div className="search-heading">{results.length?`找到 ${results.length} 个结果`:'未找到对应地区'}</div>{results.map((result,i)=><button key={result.city?.id||result.territory?.id||result.record?.code} role="option" aria-selected={activeResult===i} id={`result-${i}`} className={activeResult===i?'active':''} onMouseEnter={()=>setActiveResult(i)} onMouseDown={e=>e.preventDefault()} onClick={()=>chooseResult(i)}><span className="result-dot" style={{background:factionOf((result.territory?.faction||result.record!.code[0]) as FactionId).color}}/><span><strong>{result.city?.name||result.territory?.chineseName||(result.record&&recordDisplayName(result.record))}</strong><small>{result.city?`${result.city.europe} · ${result.territory?.name}`:result.territory?.name||result.record?.europe}</small></span><ChevronRight size={15}/></button>)}</div>}
       </div>
-      <a className="play-entry" href="#/choose"><Dice5 size={17}/>选择角色并进入 Play</a>
+      <a className="play-entry" href="#/opening"><Dice5 size={17}/>开局角色体验</a>
       <Attribution sources={data?.sources||[]}/>
     </header>
     <div className="workspace">

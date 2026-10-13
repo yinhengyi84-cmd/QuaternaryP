@@ -1,0 +1,119 @@
+.opening-page {
+  min-height: 100dvh;
+  color: #e9e6d8;
+  background:
+    radial-gradient(ellipse at 77% 47%, #274148 0, transparent 43%),
+    radial-gradient(ellipse at 8% 90%, #24312c 0, transparent 38%),
+    #111b20;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.opening-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .32;
+  background-image: linear-gradient(#a9b99a0b 1px, transparent 1px), linear-gradient(90deg, #a9b99a0b 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+.opening-header, .opening-footer { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; }
+.opening-header { min-height: 78px; padding: 14px clamp(22px, 5vw, 80px); border-bottom: 1px solid #d0c8a01d; }
+.opening-brand { display: flex; align-items: center; gap: 13px; font-family: var(--serif); font-size: 21px; letter-spacing: .17em; }
+.opening-brand svg { color: #d3bd8a; }
+.opening-brand small { display: block; margin-top: 5px; font: 9px Georgia, serif; letter-spacing: .24em; color: #8e9d91; }
+.opening-edition { display: flex; align-items: center; gap: 12px; color: #a1aa9d; font-size: 10px; letter-spacing: .14em; }
+.opening-edition i { width: 1px; height: 13px; background: #c8ba9166; }
+
+.opening-main { position: relative; z-index: 1; flex: 1; width: min(1200px, 100%); margin: auto; padding: clamp(42px, 7vh, 100px) clamp(24px, 6vw, 82px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 440px); gap: clamp(48px, 9vw, 135px); align-items: center; }
+.opening-kicker { color: #c3b18b; font: 11px Georgia, serif; letter-spacing: .25em; }
+.opening-kicker span { font-size: 24px; letter-spacing: 0; vertical-align: -3px; margin-right: 4px; }
+.opening-copy h1 { margin: 34px 0 30px; font: 400 clamp(48px, 5.3vw, 78px)/1.25 var(--serif); letter-spacing: .07em; text-wrap: balance; }
+.opening-copy h1 em { color: #d0b989; font-style: normal; }
+.opening-rule { width: 78px; height: 2px; background: #bdab81; margin: 0 0 28px; }
+.opening-copy > p:not(.opening-disclaimer) { max-width: 460px; color: #b7c0b6; font-size: 14px; line-height: 2.15; letter-spacing: .025em; }
+.opening-steps { display: flex; align-items: center; gap: 0; margin-top: 40px; max-width: 450px; border-top: 1px solid #c4bc9333; padding-top: 18px; }
+.opening-steps span { flex: 1; position: relative; color: #87968d; font-size: 11px; letter-spacing: .08em; }
+.opening-steps span::before { content: ''; position: absolute; top: -22px; left: 0; width: 6px; height: 6px; border-radius: 50%; background: #667d78; }
+.opening-steps span.current { color: #ead9b4; }
+.opening-steps span.current::before { background: #d2bd8c; box-shadow: 0 0 12px #d2bd8c; }
+.opening-disclaimer { max-width: 465px; margin-top: 38px; padding-left: 14px; border-left: 2px solid #a993694d; color: #87988e; font-size: 11px; line-height: 1.9; }
+
+.opening-stage { min-width: 0; }
+.opening-stage-top { display: flex; justify-content: space-between; color: #a2ad9c; font: 10px Georgia, serif; letter-spacing: .2em; margin-bottom: 14px; }
+.opening-card { min-height: 485px; position: relative; display: grid; place-items: center; isolation: isolate; padding: 38px; border: 1px solid #bdac8070; background: radial-gradient(circle at 50% 30%, #334047 0, #1b2a30 62%, #162329 100%); box-shadow: 0 28px 75px #0008, inset 0 0 0 7px #18252b, inset 0 0 0 8px #ab9b7150; text-align: center; }
+.opening-card-revealed { min-height: 535px; }
+.opening-card::before { content: ''; position: absolute; inset: 20px; border: 1px solid #c0b1882b; pointer-events: none; }
+.opening-card::after { content: 'M D Z S  ·  1 9 3 9'; position: absolute; bottom: 19px; font: 9px Georgia, serif; color: #b8ae8d8c; letter-spacing: .4em; }
+.opening-card-corner { position: absolute; width: 18px; height: 18px; border-color: #c9ba92; z-index: 1; }
+.opening-card-corner-tl { top: 12px; left: 12px; border-top: 1px solid; border-left: 1px solid; }
+.opening-card-corner-br { bottom: 12px; right: 12px; border-bottom: 1px solid; border-right: 1px solid; }
+.opening-card-seal, .opening-card-content { position: relative; z-index: 1; display: flex; align-items: center; flex-direction: column; width: 100%; }
+.opening-card-seal > span, .opening-card-label { color: #c3b98f; font: 10px Georgia, serif; letter-spacing: .2em; }
+.opening-sigil { width: 130px; height: 130px; display: grid; place-items: center; position: relative; margin: 45px 0 39px; border: 1px solid #c7b58a88; border-radius: 50%; box-shadow: 0 0 0 12px #c7b58a0d, 0 0 0 13px #c7b58a27; color: #d4c397; }
+.opening-sigil::before, .opening-sigil::after { content: ''; position: absolute; background: #bdad8060; }
+.opening-sigil::before { width: 172px; height: 1px; }
+.opening-sigil::after { height: 172px; width: 1px; }
+.opening-sigil svg { position: absolute; top: 28px; }
+.opening-sigil span { position: absolute; bottom: 25px; font: 38px Georgia, serif; }
+.opening-card-seal strong { font: 400 23px var(--serif); letter-spacing: .2em; }
+.opening-card-seal small { margin-top: 13px; color: #a0afa4; font-size: 10px; letter-spacing: .13em; }
+.opening-card-drawing .opening-sigil { animation: opening-pulse .7s ease-in-out infinite alternate; }
+.opening-card-drawing .opening-sigil span { animation: opening-turn .6s linear infinite; }
+@keyframes opening-pulse { to { box-shadow: 0 0 0 17px #c7b58a12, 0 0 0 18px #c7b58a4c, 0 0 50px #c7b58a55; } }
+@keyframes opening-turn { to { transform: rotateY(360deg); } }
+.opening-card-content { animation: opening-reveal .5s ease-out both; }
+@keyframes opening-reveal { from { opacity: 0; transform: translateY(13px); } to { opacity: 1; transform: translateY(0); } }
+.opening-tarot-art { width: 145px; margin: 14px 0 12px; filter: drop-shadow(0 11px 19px #0008); }
+.opening-tarot-art .tarot-artwork { width: 100%; height: auto; }
+.opening-card-kicker { color: var(--role-accent); font-size: 11px; letter-spacing: .24em; }
+.opening-card-content h2 { margin: 12px 0 10px; font: 400 39px var(--serif); letter-spacing: .25em; outline: none; }
+.opening-card-divider { width: 33px; height: 1px; background: var(--role-accent); margin: 25px 0 17px; }
+.opening-card-content p { max-width: 300px; min-height: 55px; margin: 0; color: #bcc9bd; font-size: 12px; line-height: 1.9; }
+.opening-connection { display: flex; align-items: center; gap: 12px; margin-top: 22px; font-size: 10px; }
+.opening-connection span { color: #8b9e94; }
+.opening-connection strong { color: var(--role-accent); font-weight: 500; }
+.opening-actions { min-height: 72px; display: flex; gap: 12px; align-items: center; margin-top: 17px; }
+.opening-primary { min-height: 54px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 13px; padding: 13px 20px; background: #ccb98c; border: 1px solid #e3d4a6; border-radius: 2px; color: #19252a; font-size: 13px; font-weight: 600; letter-spacing: .09em; text-align: center; }
+.opening-primary:hover { background: #e0cea2; color: #132027; }
+.opening-primary:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+.opening-reset { display: flex; gap: 6px; align-items: center; padding: 13px; color: #adb9af; font-size: 10px; white-space: nowrap; }
+.opening-progress { color: #d8c497; font-size: 12px; letter-spacing: .13em; }
+.opening-note { color: #83978d; font-size: 10px; line-height: 1.8; margin: 2px 0 0; }
+.opening-note a { margin-left: 8px; color: #d5c397; text-decoration: underline; text-underline-offset: 3px; }
+.opening-error { color: #efb1a3; font-size: 11px; margin: 14px 0 0; }
+.opening-footer { padding: 22px clamp(22px, 5vw, 80px); border-top: 1px solid #d0c8a01d; color: #7d9187; font: 9px Georgia, serif; letter-spacing: .13em; }
+
+@media (max-width: 820px) {
+  .opening-main { grid-template-columns: 1fr; gap: 34px; padding-top: 42px; padding-bottom: 42px; max-width: 520px; }
+  .opening-copy h1 { font-size: clamp(42px, 9vw, 62px); margin: 21px 0; }
+  .opening-copy > p:not(.opening-disclaimer) { font-size: 12px; }
+  .opening-steps { margin-top: 28px; }
+  .opening-disclaimer { margin-top: 23px; }
+  .opening-card { min-height: 445px; }
+  .opening-card-revealed { min-height: 505px; }
+}
+@media (max-width: 460px) {
+  .opening-header { min-height: 66px; }
+  .opening-brand { font-size: 17px; }
+  .opening-brand svg { width: 21px; }
+  .opening-edition { font-size: 9px; }
+  .opening-main { padding-left: 17px; padding-right: 17px; gap: 27px; }
+  .opening-copy h1 { font-size: 42px; }
+  .opening-steps span { font-size: 10px; }
+  .opening-card { min-height: 410px; padding: 33px 27px; }
+  .opening-card-revealed { min-height: 480px; }
+  .opening-card-content h2 { font-size: 34px; }
+  .opening-tarot-art { width: 125px; }
+  .opening-actions { gap: 5px; }
+  .opening-reset { padding-right: 0; }
+  .opening-footer { gap: 20px; font-size: 8px; line-height: 1.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening-card-drawing .opening-sigil,
+  .opening-card-drawing .opening-sigil span,
+  .opening-card-content { animation: none; }
+}
