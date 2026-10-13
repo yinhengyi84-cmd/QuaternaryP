@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import source from '../../gemini-code-1782728297042.html?raw';
-import { CHARACTERS } from '../src/opening-characters';
+import { CHARACTERS, characterById } from '../src/opening-characters';
+import source from './fixtures/old-html-six-roles.json';
 
 describe('六人开局资料', () => {
   it('稳定编号与初始阵营正确', () => {
@@ -11,15 +11,16 @@ describe('六人开局资料', () => {
     expect(new Set(CHARACTERS.map(({ id }) => id)).size).toBe(6);
   });
 
-  it('六人简述、塔罗及正逆位与旧 HTML 原文一致', () => {
-    for (const character of CHARACTERS) {
-      const oldName = character.name === '曹文浩' ? '曹文豪' : character.name;
-      const row = source.split('\n').find(line => line.includes(`name: "${oldName}"`));
-      expect(row, `${character.name} 原文条目`).toBeDefined();
-      expect(row).toContain(`bio: "${character.description}"`);
-      const tarotInSource = row?.match(/tarotName: "([^"]+)"/)?.[1];
-      expect(tarotInSource?.toLocaleLowerCase()).toBe(`${character.tarot} (${character.tarotEnglish})`.toLocaleLowerCase());
-      expect(row).toContain(`isReversed: ${character.orientation === '逆位'}`);
+  it('六人简述、塔罗及正逆位与已核对的旧 HTML 摘录一致', () => {
+    expect(CHARACTERS).toHaveLength(source.characters.length);
+    for (const original of source.characters) {
+      const character = characterById(original.id);
+      expect(character, `${original.originalName} 条目`).not.toBeNull();
+      expect(character?.name).toBe(original.originalName === '曹文豪' ? '曹文浩' : original.originalName);
+      expect(character?.tarot).toBe(original.tarot);
+      expect(character?.tarotEnglish).toBe(original.tarotEnglish);
+      expect(character?.orientation).toBe(original.orientation);
+      expect(character?.description).toBe(original.description);
     }
   });
 });

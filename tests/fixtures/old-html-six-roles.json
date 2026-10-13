@@ -1,0 +1,11 @@
+{
+  "source": "gemini-code-1782728297042.html，第 303—310 行，六位最终主角色的原始文案",
+  "characters": [
+    { "id": "lan-wangji", "originalName": "蓝忘机", "tarot": "皇帝", "tarotEnglish": "THE EMPEROR", "orientation": "逆位", "description": "苏维埃最高极权统帅。依靠致幻剂篡改记忆的伪神，陷入病态的独裁之中。" },
+    { "id": "wei-wuxian", "originalName": "魏无羡", "tarot": "愚者", "tarotEnglish": "THE FOOL", "orientation": "正位", "description": "德意志二号人物。无法被预知的量子态自由幽灵，悬崖边起舞的帝国复兴者。" },
+    { "id": "wen-ruohan", "originalName": "温若寒", "tarot": "恶魔", "tarotEnglish": "THE DEVIL", "orientation": "正位", "description": "日本天皇。占据青岛港，轻浮狂妄却掌握着足以掀翻牌桌的海上力量。" },
+    { "id": "jin-guangyao", "originalName": "金光瑶", "tarot": "倒吊人", "tarotEnglish": "THE HANGED MAN", "orientation": "正位", "description": "被生擒的拜占庭苏丹。看透权力的虚无，甘为高尚理想受难的殉道者。" },
+    { "id": "gao-zhan", "originalName": "高战", "tarot": "战车", "tarotEnglish": "THE CHARIOT", "orientation": "逆位", "description": "拜占庭前战神。因处决圣女而从神坛跌落，但残存的军中旧部仍是一股暗流。" },
+    { "id": "cao-wenhao", "originalName": "曹文豪", "tarot": "高塔", "tarotEnglish": "THE TOWER", "orientation": "正位", "description": "被软禁的拜占庭伞兵将军。遭遇政治骤变，随时处于精神崩溃的边缘。" }
+  ]
+}
