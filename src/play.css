@@ -56,6 +56,22 @@
   background: #c7b58a25;
 }
 
+.play-header-actions { margin-left: auto; }
+.play-atlas-entry { min-height: 44px; justify-content: center; }
+
+@media (max-width: 760px) {
+  .play-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 11px 12px;
+    height: auto;
+    padding: 14px 15px;
+  }
+
+  .play-header-actions { margin: 0; }
+  .play-atlas-entry { grid-column: 1 / -1; width: 100%; font-size: 13px; }
+}
+
 .play-footer-links {
   display: flex;
   align-items: center;

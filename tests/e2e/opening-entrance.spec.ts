@@ -17,7 +17,7 @@ test('统一入口能进入两种方式，切换后 Play 只读取当前身份',
   await page.getByRole('link', { name: /进入随机抽取/ }).click();
   await expect(page.getByText('未揭封的档案')).toBeVisible();
   await page.goto('/#/play');
-  await expect(page.locator('.play-intro')).not.toContainText('蓝忘机');
+  await expect(page.getByRole('heading', { name: /命运，由你选择/ })).toBeVisible();
 
   await page.goto('/#/draw');
   await page.getByRole('button', { name: '抽取我的角色' }).click();

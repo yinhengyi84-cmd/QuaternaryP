@@ -20,7 +20,8 @@ test('单人抽取、刷新保留并进入个人 Play 页面', async ({ page }) 
   await page.getByRole('link', { name: `以${name}进入 Play` }).click();
   await expect(page.getByRole('heading', { name: '我的行动与判定' })).toBeVisible();
   await expect(page.locator('.play-intro')).toContainText(`当前本地角色：${name}`);
-  await expect(page.getByRole('link', { name: '查看我的开局档案' })).toHaveAttribute('href', '#/draw');
+  await page.getByRole('button', { name: '我的角色' }).click();
+  await expect(page.getByRole('dialog', { name: name ?? '' })).toBeVisible();
 });
 
 test('试抽可重置，手机宽度与减少动态效果可用', async ({ page }) => {

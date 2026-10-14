@@ -50,3 +50,23 @@
   .entrance-room-note { align-items: flex-start; text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .entrance-option { transition: none; } }
+.entrance-continue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding: 18px 20px;
+  border: 1px solid #c7b58a66;
+  background: #c7b58a0c;
+}
+
+.entrance-continue span { display: block; color: #97ab9a; font-size: 11px; }
+.entrance-continue strong { display: block; margin-top: 7px; font: 400 22px var(--serif); color: #e5d6b1; }
+.entrance-continue a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 0 15px; background: #c7b58a18; border: 1px solid #c7b58a88; color: #ead8ad; font-size: 12px; }
+
+@media (max-width: 500px) {
+  .entrance-continue { padding: 16px; }
+  .entrance-continue a { width: 100%; }
+}

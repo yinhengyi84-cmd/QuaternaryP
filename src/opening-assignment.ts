@@ -42,6 +42,15 @@ export function createOpeningRequestId(): string {
 
 type PreviewAssignment = { mode: OpeningMode; assignedCharacterId: CharacterId | null };
 const PREVIEW_KEY = 'modaozushi.opening.preview.v2';
+const PREVIEW_CHANGED = 'modaozushi:opening-changed';
+let previewRevision = 0;
+
+export const getPreviewAssignmentRevision = () => previewRevision;
+
+export function subscribePreviewAssignment(onChange: () => void): () => void {
+  window.addEventListener(PREVIEW_CHANGED, onChange);
+  return () => window.removeEventListener(PREVIEW_CHANGED, onChange);
+}
 
 export function readPreviewAssignment(): PreviewAssignment | null {
   try {
@@ -68,6 +77,9 @@ function savePreviewAssignment(assignment: PreviewAssignment): void {
   } catch {
     // 浏览器禁用会话存储时，当前页面仍能完成一次预览。
   }
+  // 同一窗口的 sessionStorage 不会触发 storage 事件，主动通知游玩状态。
+  previewRevision += 1;
+  window.dispatchEvent(new Event(PREVIEW_CHANGED));
 }
 
 export function clearPreviewAssignment(mode: OpeningMode): void {

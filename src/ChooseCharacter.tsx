@@ -112,7 +112,7 @@ export default function ChooseCharacter({ gateway = previewChooseGateway }: Prop
   return (
     <div className="choice-page">
       <header className="choice-header">
-        <a className="choice-brand" href="#/atlas"><Compass size={23} /><span>魔道祖师<small>PERSONAL OPENING</small></span></a>
+        <a className="choice-brand" href="#/opening"><Compass size={23} /><span>魔道祖师<small>PERSONAL OPENING</small></span></a>
         <span className="choice-header-note"><span className="choice-live-dot" />{snapshot?.source === 'room' ? '房间选角' : '单人体验原型'}</span>
       </header>
 

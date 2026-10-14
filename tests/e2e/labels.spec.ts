@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 for(const viewport of [{width:390,height:844},{width:320,height:740},{width:844,height:390},{width:1440,height:900}]) {
   test(`地区名称可读、随缩放增大且避让标牌 ${viewport.width}x${viewport.height}`,async({page})=>{
     await page.setViewportSize(viewport);
-    await page.goto('/');
+    await page.goto('/#/atlas');
     await expect(page.locator('.province')).toHaveCount(190);
     const zoom=page.getByRole('button',{name:'放大地图'});
     await zoom.click();await zoom.click();

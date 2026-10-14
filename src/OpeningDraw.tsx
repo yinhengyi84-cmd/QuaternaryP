@@ -93,7 +93,7 @@ export default function OpeningDraw({ gateway = previewDrawGateway }: Props) {
   return (
     <div className="opening-page">
       <header className="opening-header">
-        <a className="opening-brand" href="#/atlas" aria-label="返回魔道祖师地图">
+        <a className="opening-brand" href="#/opening" aria-label="返回开局选角色页面">
           <Compass size={24} />
           <span>魔道祖师<small>PLAYER ENTRANCE</small></span>
         </a>

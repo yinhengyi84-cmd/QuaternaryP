@@ -10,7 +10,7 @@ export default function OpeningEntrance() {
   return (
     <div className="entrance-page">
       <header className="entrance-header">
-        <a href="#/atlas" className="entrance-brand"><Compass size={24} /><span>魔道祖师<small>PERSONAL OPENING</small></span></a>
+        <a href="#/opening" className="entrance-brand"><Compass size={24} /><span>魔道祖师<small>PERSONAL OPENING</small></span></a>
         <span>六张命运牌 · 两种开局方式</span>
       </header>
       <main className="entrance-main">
@@ -19,6 +19,12 @@ export default function OpeningEntrance() {
           <h1>命运，由你选择，<br /><em>或交给一次抽取。</em></h1>
           <p>先比较两种开场体验。它们使用同一份六人塔罗档案，最终都通往你的个人行动与判定页面。</p>
         </div>
+        {savedCharacter && (
+          <div className="entrance-continue">
+            <div><span>你的当前身份</span><strong>{savedCharacter.name}</strong></div>
+            <a href="#/play">继续以{savedCharacter.name}游玩<ArrowRight size={17} /></a>
+          </div>
+        )}
         <div className="entrance-options" aria-label="选择开局体验方式">
           <a href="#/choose" className="entrance-option entrance-option-choose">
             <div className="entrance-option-top"><span>01 / CHOOSE</span><Hand size={27} strokeWidth={1.4} /></div>

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-test.beforeEach(async({page})=>{await page.goto('/');await expect(page.locator('.province')).toHaveCount(190);});
+test.beforeEach(async({page})=>{await page.goto('/#/atlas');await expect(page.locator('.province')).toHaveCount(190);});
 test('搜索、定位、缩放复位与阵营聚焦',async({page})=>{
   const search=page.getByRole('combobox',{name:'搜索地区'});await search.fill('长沙');await search.press('Enter');await expect(page.getByTestId('region-title')).toHaveText('长沙／潭州');await expect(page.getByTestId('zoom-level')).not.toHaveText('100%');
   await page.getByRole('button',{name:'恢复全图'}).click();await expect(page.getByTestId('zoom-level')).toHaveText('100%');
